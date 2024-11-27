@@ -63,9 +63,9 @@ if [ $? -eq 0 ]; then
     git commit -m "Automated commit: All tests passed" > /dev/null 2>&1
     git push origin "$DEVELOP_BRANCH"
     if [ $? -eq 0 ]; then
-        printf "\n✅ Push to %s completed successfully.\n\n" $DEVELOP_BRANCH
+        printf "✅ Push to %s completed successfully.\n\n" $DEVELOP_BRANCH
     else
-        printf "\n❌ Push to %s failed. Please check your git configuration.\n\n" $DEVELOP_BRANCH
+        printf "❌ Push to %s failed. Please check your git configuration.\n\n" $DEVELOP_BRANCH
         exit 1
     fi
     loading_message "Preparing to push to $STAGING_BRANCH" 3
@@ -76,10 +76,10 @@ if [ $? -eq 0 ]; then
     git checkout "$DEVELOP_BRANCH"
     if [ $? -eq 0 ]; then
       # shellcheck disable=SC2028
-      printf "\n✅ Push to %s completed successfully." $STAGING_BRANCH
+      printf "✅ Push to %s completed successfully." $STAGING_BRANCH
     else
       # shellcheck disable=SC2028
-      echo "\n❌ Push to %s failed. Please check your git configuration.\n" $STAGING_BRANCH
+      printf "❌ Push to %s failed. Please check your git configuration.\n" $STAGING_BRANCH
       exit 1
     fi
 else
