@@ -76,10 +76,10 @@ if [ $? -eq 0 ]; then
     git checkout "$DEVELOP_BRANCH"
     if [ $? -eq 0 ]; then
       # shellcheck disable=SC2028
-      printf "✅ Push to %s completed successfully." $STAGING_BRANCH
+      printf "✅ Push to %s completed successfully.\n\n" $STAGING_BRANCH
     else
       # shellcheck disable=SC2028
-      printf "❌ Push to %s failed. Please check your git configuration.\n" $STAGING_BRANCH
+      printf "❌ Push to %s failed. Please check your git configuration.\n\n" $STAGING_BRANCH
       exit 1
     fi
 else
