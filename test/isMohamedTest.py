@@ -1,4 +1,3 @@
-import pytest
 from isMohamed import is_mohamed
 
 def test_is_mohamed():
