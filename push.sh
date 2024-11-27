@@ -61,8 +61,6 @@ if [ $? -eq 0 ]; then
 
     loading_message "Preparing to push to $DEVELOP_BRANCH" 3
     loading_message "Pushing to $DEVELOP_BRANCH branch" 3
-    git add .
-    git commit -m "Automated commit: All tests passed" > /dev/null 2>&1
     git push origin "$DEVELOP_BRANCH" &
     spinner $!
     if [ $? -eq 0 ]; then
