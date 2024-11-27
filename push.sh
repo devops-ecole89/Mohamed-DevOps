@@ -34,7 +34,10 @@ log_error() {
         touch "$ERROR_LOG"
     fi
 
-    echo "[$timestamp] $error_message" >> "$ERROR_LOG"
+    # shellcheck disable=SC2129
+    echo "[$timestamp]" >> "$ERROR_LOG"
+    echo "$error_message" >> "$ERROR_LOG"
+    echo "" >> "$ERROR_LOG"
 }
 
 # Fonction pour simuler une animation "chargement" texte
@@ -51,8 +54,7 @@ loading_message() {
 
 loading_message "Running tests" 3
 echo "Tests in progress..."
-$TEST_COMMAND "$TEST_DIR" > /dev/null 2>&1 &
-spinner $!
+$TEST_COMMAND "$TEST_DIR" > /dev/null 2>&1
 # shellcheck disable=SC2181
 if [ $? -eq 0 ]; then
     printf "✅ Tests passed successfully.\n\n"
@@ -75,15 +77,13 @@ if [ $? -eq 0 ]; then
     git push origin "$STAGING_BRANCH"
     git checkout "$DEVELOP_BRANCH"
     if [ $? -eq 0 ]; then
-      # shellcheck disable=SC2028
       printf "✅ Push to %s completed successfully.\n\n" $STAGING_BRANCH
     else
-      # shellcheck disable=SC2028
       printf "❌ Push to %s failed. Please check your git configuration.\n\n" $STAGING_BRANCH
       exit 1
     fi
 else
-    echo "❌ Tests failed."
+    echo " ❌ Tests failed."
 
     last_error=$($TEST_COMMAND "$TEST_DIR" 2>&1)
 
