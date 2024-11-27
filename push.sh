@@ -63,7 +63,8 @@ if [ $? -eq 0 ]; then
     loading_message "Pushing to $DEVELOP_BRANCH branch" 3
     git add .
     git commit -m "Automated commit: All tests passed" > /dev/null 2>&1
-    git push origin "$DEVELOP_BRANCH"
+    git push origin "$DEVELOP_BRANCH" &
+    spinner $!
     if [ $? -eq 0 ]; then
         printf "✅ Push to %s completed successfully.\n\n" $DEVELOP_BRANCH
     else
@@ -74,7 +75,8 @@ if [ $? -eq 0 ]; then
     loading_message "Pushing to $STAGING_BRANCH branch" 3
     git checkout "$STAGING_BRANCH"
     git merge "$DEVELOP_BRANCH"
-    git push origin "$STAGING_BRANCH"
+    git push origin "$STAGING_BRANCH" &
+    spinner $!
     git checkout "$DEVELOP_BRANCH"
     if [ $? -eq 0 ]; then
       printf "✅ Push to %s completed successfully.\n\n" $STAGING_BRANCH
