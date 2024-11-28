@@ -1,4 +1,4 @@
-name: Run Tests
+name: Run Tests and Merge to Staging
 
 on: [push, pull_request]
 
@@ -23,10 +23,10 @@ jobs:
     - name: Run tests
       run: |
         pytest --tb=short --disable-warnings
-      continue-on-error: true
 
-    - name: Save logs on failure
-      if: failure()
+    - name: Merge develop into staging
+      if: success()
       run: |
-        mkdir -p logs
-        pytest --tb=short --disable-warnings > logs/test_log.txt
+        git checkout staging
+        git merge develop
+        git push origin staging
