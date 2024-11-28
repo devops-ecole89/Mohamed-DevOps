@@ -1,57 +1,30 @@
-# Utiliser une image Ubuntu officielle comme base
-FROM ubuntu:20.04
+FROM python:3.10-slim
 
-# Prévenir les invites interactives pour tzdata et autres paquets
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Étape 1 : Mettre à jour le système et installer les dépendances
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y --no-install-recommends \
-    nginx \
-    python3 \
-    python3-venv \
-    python3-pip \
-    python3-dev \
+# Install the necessary system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
     build-essential \
     libssl-dev \
     libffi-dev \
-    python3-setuptools \
-    emacs-nox \
-    curl \
-    git \
-    ca-certificates && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+    --no-install-recommends && \
+    rm -rf /var/lib/apt/lists/*
 
-# Création d'un groupe et ajout de l'utilisateur www-data à ce groupe
-RUN groupadd --system myprojectgroup && usermod -aG myprojectgroup www-data
+# Define the working directory
+WORKDIR /home/python/app
 
-# Etape 2 : Création d'un environnement virtuel Python
-RUN mkdir /myproject
-WORKDIR /myproject
-RUN python3 -m venv myprojectenv
+# Clone the Git repository and checkout the dev branch
+RUN git clone https://github.com/devops-ecole89/Mohamed-DevOps.git
+WORKDIR /home/python/app/Mohamed-DevOps
+RUN git checkout develop
 
-# Activer l'environnement virtuel
-ENV PATH="/myproject/myprojectenv/bin:$PATH"
+# Install the Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Etape 3 : Installation des dépendances et configuration de Flask
-RUN pip install --upgrade pip wheel
-RUN pip install Flask gunicorn
+# Define the PYTHONPATH environment variable to include the code directory
+ENV PYTHONPATH=/home/python/app/Mohamed-DevOps
 
-# Copier les fichiers de l'application Flask
-COPY myproject.py /myproject/myproject.py
-COPY wsgi.py /myproject/wsgi.py
+# Expose the port (optional)
+EXPOSE 5000
 
-# Etape 5 : Configuration de Nginx pour les demandes de proxy
-COPY nginx.conf /etc/nginx/sites-available/myproject
-RUN ln -s /etc/nginx/sites-available/myproject /etc/nginx/sites-enabled
-RUN rm /etc/nginx/sites-enabled/default
-
-# Exposer le port 80 pour Nginx
-EXPOSE 80
-
-# Copier le script start dans le conteneur
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
-# Utiliser le script comme point d'entrée du conteneur
-CMD ["/start.sh"]
+# Exécuter l'application
+CMD ["python", "main.py"]
