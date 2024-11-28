@@ -30,9 +30,9 @@ jobs:
     - name: Merge develop into staging
       if: success()
       run: |
-        git fetch --all
+        git pull
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git checkout staging
-        git merge origin/develop
+        git merge -X theirs origin/develop
         git push origin staging
