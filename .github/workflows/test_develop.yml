@@ -34,5 +34,5 @@ jobs:
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git checkout staging
-        git merge origin develop
+        git merge origin/develop
         git push origin staging
