@@ -1,0 +1,10 @@
+services:
+  flask:
+    build:
+      context: .
+      args:
+        VERSION: ${VERSION}
+    image: mohamed-devops-flask:${VERSION:-latest}
+    container_name: Flask-${VERSION:-latest}
+    ports:
+      - "5000:5000"

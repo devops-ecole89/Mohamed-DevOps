@@ -1,5 +1,9 @@
 FROM python:3.10-slim
 
+# Version managing
+ARG VERSION="latest"
+LABEL version=$VERSION
+
 # Install the necessary system dependencies
 RUN apt-get update && apt-get install -y \
     git \
