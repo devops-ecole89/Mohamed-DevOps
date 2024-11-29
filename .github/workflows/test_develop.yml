@@ -1,6 +1,9 @@
 name: Run Tests and Merge to Staging
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - develop
 
 jobs:
   test:
@@ -10,7 +13,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0  # Récupère tout l'historique des branches
+        fetch-depth: 0
 
     - name: Configure Git
       run: |
