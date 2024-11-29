@@ -5,7 +5,7 @@ app = Flask(__name__)
 @app.route("/")
 def hello():
     return ("<div style='display:flex;justify-content:center;align-item:center;text-align:center;'>"
-            "<h1 style='color:blue;text-align:center;'>Je suis un site web dev en flash</h1>"
+            "<h1 style='color:blue;text-align:center;'>Je suis un site web</h1>"
             "</div>")
 
 @app.route('/run-tests')
